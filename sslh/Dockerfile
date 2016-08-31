@@ -10,7 +10,9 @@ RUN echo "http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositorie
   && sed -i 's/^\(USELIBPCRE=\)/\11/' /srv/sslh-*/Makefile \
   && make -C /srv/sslh-* \
   && mv /srv/sslh-*/sslh-fork /srv/sslh-*/sslh-select /usr/local/bin/ \
-  && rm -rf /srv/sslh-*
+  && rm -rf /srv/sslh-* \
+  && apk del --purge gcc build-base libconfig-dev pcre-dev make
 
 COPY ["configure-sslh.sh", "/usr/local/bin/"]
+
 ENTRYPOINT ["/usr/bin/dumb-init", "/usr/local/bin/configure-sslh.sh"]
