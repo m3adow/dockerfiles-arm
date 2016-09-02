@@ -1,0 +1,3 @@
+[submodule "_submodules/golang"]
+	path = _submodules/golang
+	url = git@github.com:m3adow/docker-armhf-golang.git
