@@ -1,0 +1,11 @@
+FROM container4armhf/armhf-golang-bin
+MAINTAINER Till Wiese <mail-github.com@till-wiese.de>
+
+RUN set -ex \
+  && apk add --no-cache git bash \
+  && go get github.com/mholt/caddy/caddy
+
+COPY ["entrypoint.sh", "/usr/local/bin/"]
+COPY ["etc/caddyplugins.conf", "/etc/"]
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

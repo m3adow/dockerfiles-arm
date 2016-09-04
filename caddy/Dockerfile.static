@@ -1,0 +1,27 @@
+FROM container4armhf/armhf-alpine:latest
+MAINTAINER Till Wiese <mail-github.com@till-wiese.de>
+
+#COPY ["entrypoint.sh", "/usr/local/bin/"]
+#COPY ["static/caddy-enabled-plugins", "static/caddyplugins.conf", "/etc/"]
+
+COPY ["entrypoint.sh", "/usr/local/bin/"]
+COPY ["static/caddy-enabled-plugins", "etc/caddyplugins.conf", "/etc/"]
+
+# When dl.golang.org changes, the download of tar.gz and SHA256SUM will fail
+RUN set -ex \
+  && apk add --no-cache libc6-compat curl bash git \
+  && curl -sLo /tmp/golang.tar.gz $(curl -sL https://golang.org/dl/ \
+    | grep -oE 'https?://[a-zA-Z0-9_./-]*go[a-zA-Z0-9_.-]*armv6l.tar.gz' | head -1) \
+  && echo "$(curl -sL https://golang.org/dl/ | grep -m1 -A 5 -E 'https?://[a-zA-Z0-9_./-]*go[a-zA-Z0-9_.-]*armv6l.tar.gz' \
+    |tail -1|sed -e 's/<[^>]*>//g' -e 's/[[:blank:]]//g')  /tmp/golang.tar.gz" | sha256sum -c - \
+  && tar -C /usr/local -xzf /tmp/golang.tar.gz \
+  && rm /tmp/golang.tar.gz \
+  && mkdir /go \
+  && GOPATH=/go /usr/local/go/bin/go get github.com/mholt/caddy/caddy \
+  && DONT_EXEC=1 CADDY_PLUGINS="$(cat /etc/caddy-enabled-plugins)" \
+      GOPATH="/go" PATH=$GOPATH/bin:/usr/local/go/bin:$PATH /usr/local/bin/entrypoint.sh \
+  && mv /go/bin/caddy /usr/local/bin \
+  && rm -rf /usr/local/go /go \
+  && apk del --purge curl bash git
+
+ENTRYPOINT ["/usr/local/bin/caddy"]
