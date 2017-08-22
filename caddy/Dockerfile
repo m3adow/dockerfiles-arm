@@ -1,9 +1,9 @@
 FROM container4armhf/armhf-alpine:latest
 
-RUN apk add --no-cache curl bash \
+RUN apk add --no-cache curl bash gnupg\
     && curl https://getcaddy.com \
     | bash -s http.filemanager,http.upload,tls.dns.cloudflare \
-    && apk del --purge curl bash \
+    && apk del --purge curl bash gnupg \
     && apk add --no-cache ca-certificates
 
 ENTRYPOINT ["/usr/local/bin/caddy"]
