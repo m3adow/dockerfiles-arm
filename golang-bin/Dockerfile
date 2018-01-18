@@ -1,5 +1,4 @@
-FROM container4armhf/armhf-alpine:latest
-MAINTAINER Till Wiese <mail-github.com@till-wiese.de>
+FROM arm32v6/alpine:latest
 
 # When dl.golang.org changes, the download of tar.gz and SHA256SUM will fail
 RUN set -ex \

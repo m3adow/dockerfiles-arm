@@ -1,5 +1,4 @@
-FROM container4armhf/armhf-alpine
-MAINTAINER Till Wiese <mail-github.com@till-wiese.de>
+FROM arm32v6/alpine:latest
 
 RUN echo "http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
   && apk --no-cache add curl libconfig libconfig-dev make gcc dumb-init \

@@ -1,4 +1,4 @@
-FROM container4armhf/armhf-alpine:latest
+FROM arm32v6/alpine:latest
 
 RUN apk --no-cache add duplicity duply py-pip \
       ca-certificates grep gawk \

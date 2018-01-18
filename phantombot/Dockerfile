@@ -1,4 +1,4 @@
-FROM container4armhf/armhf-alpine:latest
+FROM arm32v6/alpine:latest
 
 ARG PROJECT_NAME=PhantomBot
 ARG BASEDIR=/opt/${PROJECT_NAME}
